@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="YTSaver – Free YouTube video downloader. Download YouTube videos in HD 1080p, 720p, 480p, 360p MP4 format instantly. No software needed, fast and free."/>
+  <meta name="keywords" content="youtube downloader, download youtube videos, youtube to mp4, yt downloader, free youtube downloader, hd video download"/>
+  <meta name="robots" content="index, follow"/>
+  <meta property="og:title" content="YTSaver – Free YouTube Video Downloader"/>
+  <meta property="og:description" content="Download YouTube videos in HD quality. Free, fast and no registration required."/>
+  <title>YTSaver – Free YouTube Video Downloader | HD MP4 Download</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #ffffff;
+      --surface: #f7f7f9;
+      --surface2: #efefef;
+      --surface3: #e8e8ec;
+      --border: rgba(0,0,0,0.08);
+      --border2: rgba(0,0,0,0.12);
+      --red: #e8232a;
+      --red-glow: rgba(232,35,42,0.10);
+      --red-soft: rgba(232,35,42,0.07);
+      --text: #111114;
+      --text2: #4a4a55;
+      --muted: #8a8a96;
+      --radius: 12px;
+      --font-display: 'Poppins', sans-serif;
+      --font-mono: 'Poppins', sans-serif;
+      --font-body: 'Poppins', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NOISE TEXTURE ── */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9999; opacity: 0.5;
+    }
+
+    /* ── PAGE LOAD ANIMATION ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 0.6s ease both; }
+    .fade-up-1 { animation-delay: 0.05s; }
+    .fade-up-2 { animation-delay: 0.15s; }
+    .fade-up-3 { animation-delay: 0.25s; }
+    .fade-up-4 { animation-delay: 0.35s; }
+
+    /* ════════════════════════════
+       HEADER
+    ════════════════════════════ */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    .header-inner {
+      max-width: 1160px; margin: 0 auto;
+      padding: 0 28px;
+      height: 66px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo {
+      font-family: var(--font-display);
+      font-size: 22px; font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--text);
+      text-decoration: none;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .logo-icon {
+      width: 30px; height: 30px;
+      background: var(--red);
+      border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .logo-icon svg { display: block; }
+    .logo span { color: var(--red); }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 6px;
+    }
+    .nav-links a {
+      color: var(--text2);
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 500;
+      padding: 7px 14px;
+      border-radius: 8px;
+      transition: color 0.2s, background 0.2s;
+      letter-spacing: 0.2px;
+    }
+    .nav-links a:hover { color: var(--text); background: var(--surface2); }
+
+    .header-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0,0,0,0.10) 20%, rgba(0,0,0,0.10) 80%, transparent);
+    }
+
+    /* ════════════════════════════
+       HERO / TOOL SECTION
+    ════════════════════════════ */
+    .hero {
+      padding: 72px 28px 56px;
+      text-align: center;
+      position: relative;
+    }
+    .hero-glow {
+      position: absolute;
+      top: -60px; left: 50%;
+      transform: translateX(-50%);
+      width: 600px; height: 400px;
+      background: radial-gradient(ellipse at center, rgba(232,35,42,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-family: var(--font-mono);
+      font-size: 10.5px; letter-spacing: 2px;
+      color: var(--red);
+      background: var(--red-soft);
+      border: 1px solid rgba(232,35,42,0.2);
+      padding: 5px 14px; border-radius: 999px;
+      margin-bottom: 22px;
+      text-transform: uppercase;
+    }
+    .hero-eyebrow span { width: 5px; height: 5px; background: var(--red); border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(34px, 5.5vw, 58px);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -1.5px;
+      color: var(--text);
+      margin-bottom: 18px;
+      position: relative;
+    }
+    .hero h1 em { color: var(--red); font-style: normal; }
+
+    .hero-sub {
+      font-size: 16px;
+      color: var(--text2);
+      max-width: 500px; margin: 0 auto 44px;
+      line-height: 1.65;
+      font-weight: 400;
+    }
+
+    /* ── DOWNLOADER WIDGET WRAPPER ── */
+    .tool-wrapper {
+      max-width: 700px; margin: 0 auto;
+      position: relative;
+    }
+    .tool-card {
+      background: #ffffff;
+      border: 1px solid rgba(0,0,0,0.10);
+      border-radius: 18px;
+      padding: 32px 32px 36px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.06);
+      position: relative;
+      overflow: hidden;
+    }
+    .tool-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(232,35,42,0.5) 50%, transparent);
+    }
+
+    /* ── STATS STRIP ── */
+    .stats-strip {
+      display: flex; justify-content: center; gap: 40px;
+      padding: 28px 0 0;
+      flex-wrap: wrap;
+    }
+    .stat-item { text-align: center; }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 22px; font-weight: 800;
+      color: var(--text);
+    }
+    .stat-num span { color: var(--red); }
+    .stat-label {
+      font-size: 11px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+    }
+
+    /* ════════════════════════════
+       ARTICLE SECTION
+    ════════════════════════════ */
+    .article-section {
+      max-width: 860px; margin: 0 auto;
+      padding: 56px 28px 64px;
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 10px; letter-spacing: 2.5px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 32px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1; height: 1px;
+      background: var(--border);
+    }
+
+    .article-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(22px, 3.5vw, 30px);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 14px;
+      letter-spacing: -0.5px;
+      line-height: 1.25;
+    }
+    .article-section h3 {
+      font-family: var(--font-display);
+      font-size: clamp(16px, 2.5vw, 20px);
+      font-weight: 700;
+      color: var(--text);
+      margin: 36px 0 12px;
+      letter-spacing: -0.3px;
+    }
+    .article-section p {
+      font-size: 15.5px;
+      color: var(--text2);
+      line-height: 1.78;
+      margin-bottom: 16px;
+    }
+    .article-section strong { color: var(--text); font-weight: 600; }
+
+    /* Steps */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin: 28px 0;
+    }
+    .step-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 20px;
+      position: relative;
+      transition: border-color 0.2s;
+    }
+    .step-card:hover { border-color: rgba(232,35,42,0.3); }
+    .step-num {
+      font-family: var(--font-mono);
+      font-size: 10px; letter-spacing: 1px;
+      color: var(--red);
+      margin-bottom: 10px;
+    }
+    .step-card h4 {
+      font-family: var(--font-display);
+      font-size: 15px; font-weight: 700;
+      color: var(--text);
+      margin-bottom: 7px;
+    }
+    .step-card p { font-size: 13.5px; color: var(--text2); line-height: 1.6; margin: 0; }
+
+    /* Feature grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+      margin: 24px 0;
+    }
+    .feature-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 16px;
+      display: flex; gap: 12px; align-items: flex-start;
+      transition: border-color 0.2s;
+    }
+    .feature-item:hover { border-color: var(--border2); }
+    .feature-icon {
+      width: 34px; height: 34px; flex-shrink: 0;
+      background: var(--red-soft);
+      border: 1px solid rgba(232,35,42,0.2);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .feature-text h5 {
+      font-size: 13.5px; font-weight: 700;
+      color: var(--text); margin-bottom: 4px;
+    }
+    .feature-text p { font-size: 12.5px; color: var(--muted); margin: 0; line-height: 1.5; }
+
+    /* FAQ */
+    .faq-list { margin: 24px 0; display: flex; flex-direction: column; gap: 10px; }
+    .faq-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .faq-q {
+      width: 100%; text-align: left;
+      background: none; border: none; cursor: pointer;
+      padding: 18px 20px;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      font-family: var(--font-body);
+      font-size: 14.5px; font-weight: 600;
+      color: var(--text);
+      transition: color 0.2s;
+    }
+    .faq-q:hover { color: var(--red); }
+    .faq-icon {
+      flex-shrink: 0; width: 18px; height: 18px;
+      border: 1px solid var(--border2); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.25s, background 0.2s;
+    }
+    .faq-item.open .faq-icon { transform: rotate(45deg); background: var(--red-soft); border-color: rgba(232,35,42,0.3); }
+    .faq-a {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s;
+      padding: 0 20px;
+      font-size: 14px; color: var(--text2); line-height: 1.72;
+    }
+    .faq-item.open .faq-a { max-height: 300px; padding: 0 20px 18px; }
+
+    /* ════════════════════════════
+       DIVIDER
+    ════════════════════════════ */
+    .page-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0,0,0,0.10) 20%, rgba(0,0,0,0.10) 80%, transparent);
+      margin: 0 28px;
+    }
+
+    /* ════════════════════════════
+       FOOTER
+    ════════════════════════════ */
+    footer { background: #f7f7f9; }
+.footer-inner-x {
+      background: var(--surface);
+    }
+    .footer-inner {
+      max-width: 1160px; margin: 0 auto;
+      padding: 44px 28px 32px;
+    }
+    .footer-top {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      flex-wrap: wrap; gap: 28px;
+      margin-bottom: 36px;
+    }
+    .footer-brand .logo { margin-bottom: 10px; }
+    .footer-brand p {
+      font-size: 13px; color: var(--muted);
+      max-width: 280px; line-height: 1.65;
+    }
+    .footer-links-group h6 {
+      font-family: var(--font-mono);
+      font-size: 10px; letter-spacing: 2px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .footer-links-group ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-links-group ul a {
+      font-size: 13.5px; color: var(--text2);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links-group ul a:hover { color: var(--text); }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(0,0,0,0.08);
+      padding-top: 22px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-bottom p {
+      font-size: 12.5px; color: var(--muted);
+      font-family: var(--font-mono);
+    }
+    .footer-bottom-links { display: flex; gap: 20px; }
+    .footer-bottom-links a {
+      font-size: 12.5px; color: var(--muted);
+      text-decoration: none;
+      font-family: var(--font-mono);
+      transition: color 0.2s;
+    }
+    .footer-bottom-links a:hover { color: var(--text2); }
+
+    /* ════════════════════════════
+       RESPONSIVE
+    ════════════════════════════ */
+    @media (max-width: 768px) {
+      .header-inner { padding: 0 18px; }
+      .nav-links { gap: 2px; }
+      .nav-links a { padding: 6px 10px; font-size: 12px; }
+      .hero { padding: 48px 18px 40px; }
+      .tool-card { padding: 22px 18px 26px; }
+      .article-section { padding: 40px 18px 50px; }
+      .footer-top { flex-direction: column; gap: 24px; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .stats-strip { gap: 24px; }
+      .page-divider { margin: 0 18px; }
+    }
+    @media (max-width: 480px) {
+      .hero h1 { letter-spacing: -0.8px; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── YTDL Widget Overrides for dark card ── */
+    #ytdl-wrap {
+      max-width: 100% !important;
+      padding: 0 !important;
+    }
+    #ytdl-wrap .ytdl-header { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════ HEADER ══════════ -->
+  <header>
+    <div class="header-inner">
+      <a class="logo" href="#">
+        <div class="logo-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        YT<span>Saver</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#how-it-works">How it Works</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+  <div class="header-divider"></div>
+
+  <!-- ══════════ HERO + TOOL ══════════ -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+
+    <div class="hero-eyebrow fade-up fade-up-1">
+      <span></span> Free · No Login · Instant Download
+    </div>
+
+    <h1 class="fade-up fade-up-2">
+      Download Any YouTube<br/>Video in <em>Seconds</em>
+    </h1>
+
+    <p class="hero-sub fade-up fade-up-3">
+      Paste a YouTube link, choose your quality, and download instantly.
+      No software, no registration — completely free.
+    </p>
+
+    <div class="tool-wrapper fade-up fade-up-4">
+      <div class="tool-card">
+
+        <!-- ═══ YOUR DOWNLOADER CODE INJECTED HERE ═══ -->
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+        <style>
+          #ytdl-wrap *, #ytdl-wrap *::before, #ytdl-wrap *::after { box-sizing: border-box; margin: 0; padding: 0; }
+          #ytdl-wrap {
+            font-size: 16px; font-family: 'Poppins', sans-serif; color: #f0f0f0;
+            width: 100%; max-width: 660px; margin: 0 auto; padding: 20px 16px 40px;
+            position: relative; background: transparent;
+            display: block !important; visibility: visible !important; opacity: 1 !important;
+          }
+          #ytdl-wrap .ytdl-header { text-align: center; margin-bottom: 22px; }
+          #ytdl-wrap .ytdl-header h2 {
+            font-size: clamp(26px, 6vw, 42px); font-weight: 800; letter-spacing: -0.5px;
+            line-height: 1.15; color: #e8232a; font-family: 'Poppins', sans-serif;
+          }
+          #ytdl-wrap .ytdl-tagline { margin-top: 6px; font-family: 'Poppins', sans-serif; font-size: 13px; color: #555; letter-spacing: 1px; }
+          #ytdl-wrap .ytdl-result-card { display: none; background: #ffffff; border: 2px solid #e8232a; border-radius: 14px; overflow: hidden; margin-bottom: 16px; animation: ytdlSlideDown .35s ease; }
+          #ytdl-wrap .ytdl-result-card.show { display: block; }
+          @keyframes ytdlSlideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+          #ytdl-wrap .ytdl-thumb-wrap { position: relative; width: 100%; aspect-ratio: 16/9; background: #f0f0f0 center/cover no-repeat; overflow: hidden; }
+          #ytdl-wrap .ytdl-thumb-placeholder { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #aaaaaa; font-family: 'Poppins', sans-serif; font-size: 11px; z-index: 1; }
+          #ytdl-wrap .ytdl-thumb-info { padding: 14px 16px 10px; }
+          #ytdl-wrap .ytdl-video-title { font-size: 16px; font-weight: 700; line-height: 1.4; margin-bottom: 8px; color: #111114; }
+          #ytdl-wrap .ytdl-meta-row { display: flex; flex-wrap: wrap; gap: 10px; }
+          #ytdl-wrap .ytdl-meta-item { display: flex; align-items: center; gap: 5px; font-family: 'Poppins', sans-serif; font-size: 12px; color: #555; }
+          #ytdl-wrap .ytdl-divider { height: 1px; background: #e8e8ec; margin: 0 16px; }
+          #ytdl-wrap .ytdl-formats-section { padding: 14px 16px 18px; }
+          #ytdl-wrap .ytdl-formats-label { font-family: 'Poppins', sans-serif; font-size: 14px; color: #111114; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 12px; }
+          #ytdl-wrap .ytdl-formats-grid { display: flex; flex-direction: column; gap: 6px; }
+          #ytdl-wrap .ytdl-format-row { display: flex; align-items: center; justify-content: space-between; background: #f7f7f9; border: 1px solid #e0e0e6; border-radius: 9px; padding: 10px 12px; transition: background .2s, border-color .2s; }
+          #ytdl-wrap .ytdl-format-row:hover { background: #efefef; border-color: #d0d0d8; }
+          #ytdl-wrap .ytdl-format-left { display: flex; align-items: center; gap: 10px; }
+          #ytdl-wrap .ytdl-qbadge { font-family: 'Poppins', sans-serif; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 5px; min-width: 52px; text-align: center; white-space: nowrap; }
+          #ytdl-wrap .ytdl-q-4k   { background: rgba(255,180,0,0.1);   border: 1px solid rgba(255,180,0,0.4);    color: #ffbb00; }
+          #ytdl-wrap .ytdl-q-1080 { background: rgba(26,127,255,0.1);  border: 1px solid rgba(26,127,255,0.4);   color: #1a7fff; }
+          #ytdl-wrap .ytdl-q-720  { background: rgba(0,200,120,0.1);   border: 1px solid rgba(0,200,120,0.4);    color: #00c878; }
+          #ytdl-wrap .ytdl-q-480  { background: rgba(255,180,0,0.1);   border: 1px solid rgba(255,180,0,0.35);   color: #ffbb00; }
+          #ytdl-wrap .ytdl-q-360  { background: rgba(160,100,255,0.1); border: 1px solid rgba(160,100,255,0.35); color: #a064ff; }
+          #ytdl-wrap .ytdl-q-other{ background: rgba(255,255,255,0.05);border: 1px solid #2a2a2a; color: #777; }
+          #ytdl-wrap .ytdl-format-info { display: flex; flex-direction: column; gap: 2px; }
+          #ytdl-wrap .ytdl-format-type { font-size: 14px; font-weight: 600; color: #111114; }
+          #ytdl-wrap .ytdl-format-size { font-family: 'Poppins', sans-serif; font-size: 11px; color: #555; }
+          #ytdl-wrap .ytdl-rec-tag { font-family: 'Poppins', sans-serif; font-size: 7px; padding: 2px 5px; background: rgba(232,35,42,0.1); border: 1px solid rgba(232,35,42,0.3); color: #e8232a; border-radius: 3px; margin-left: 5px; vertical-align: middle; }
+          #ytdl-wrap .ytdl-btn-dl { display: flex; align-items: center; gap: 6px; background: #e8232a; border: none; color: #fff; border-radius: 8px; padding: 12px 18px; font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: opacity .18s, transform .1s; white-space: nowrap; }
+          #ytdl-wrap .ytdl-btn-dl:hover { opacity: .82; }
+          #ytdl-wrap .ytdl-btn-dl:active { transform: scale(.96); }
+          #ytdl-wrap .ytdl-search-wrap { margin-bottom: 20px; display: block; width: 100%; }
+          #ytdl-wrap .ytdl-search-box { background: #f5f5f7; border: 2px solid #e8232a; border-radius: 10px; padding: 5px 5px 5px 14px; display: flex; align-items: center; gap: 8px; transition: box-shadow .2s; width: 100%; }
+          #ytdl-wrap .ytdl-search-box:focus-within { box-shadow: 0 0 0 3px rgba(232,35,42,0.12); }
+          #ytdl-wrap .ytdl-search-box input { flex: 1; background: none; border: none; outline: none; color: #111114; font-family: 'Poppins', sans-serif; min-width: 0; width: 100%; font-size: 16px; }
+          #ytdl-wrap .ytdl-search-box input::placeholder { color: #555; }
+          #ytdl-wrap .ytdl-btn-fetch { background: #e8232a; color: #fff; border: none; border-radius: 7px; padding: 12px 22px; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 15px; cursor: pointer; white-space: nowrap; transition: opacity .2s, transform .1s; flex-shrink: 0; display: flex !important; visibility: visible !important; }
+          #ytdl-wrap .ytdl-btn-fetch:hover { opacity: .85; }
+          #ytdl-wrap .ytdl-btn-fetch:active { transform: scale(.97); }
+          #ytdl-wrap .ytdl-btn-fetch:disabled { opacity: .4; cursor: not-allowed; }
+          #ytdl-wrap .ytdl-loader { display: none; flex-direction: column; align-items: center; gap: 10px; padding: 28px; }
+          #ytdl-wrap .ytdl-loader.show { display: flex; }
+          #ytdl-wrap .ytdl-spinner { width: 28px; height: 28px; border: 2.5px solid #222222; border-top-color: #e8232a; border-radius: 50%; animation: ytdlSpin .7s linear infinite; }
+          @keyframes ytdlSpin { to { transform: rotate(360deg); } }
+          #ytdl-wrap .ytdl-loader p { color: #555; font-family: 'Poppins', sans-serif; font-size: 10px; }
+          #ytdl-wrap .ytdl-error-box { display: none; background: rgba(232,35,42,0.07); border: 1px solid rgba(232,35,42,0.25); border-radius: 8px; padding: 10px 14px; margin-top: 12px; font-family: 'Poppins', sans-serif; font-size: 11px; color: #ff6a6a; line-height: 1.7; }
+          #ytdl-wrap .ytdl-error-box.show { display: block; }
+          #ytdl-wrap .ytdl-no-formats { color: #555; font-family: 'Poppins', sans-serif; font-size: 11px; padding: 6px 0; }
+          #ytdl-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.88); backdrop-filter: blur(6px); z-index: 999999; align-items: center; justify-content: center; padding: 20px; }
+          #ytdl-modal-overlay.show { display: flex; }
+          #ytdl-modal-overlay .ytdl-modal { background: #ffffff; border: 1px solid #1e1e1e; border-radius: 16px; padding: 0; max-width: 360px; width: 100%; overflow: hidden; animation: ytdlPopIn .22s cubic-bezier(.34,1.56,.64,1); }
+          @keyframes ytdlPopIn { from { opacity: 0; transform: scale(.9); } to { opacity: 1; transform: scale(1); } }
+          #ytdl-modal-overlay .ytdl-modal-stripe { height: 4px; background: linear-gradient(90deg, #e8232a, #1a7fff); }
+          #ytdl-modal-overlay .ytdl-modal-body { padding: 22px 22px 18px; }
+          #ytdl-modal-overlay .ytdl-modal-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+          #ytdl-modal-overlay .ytdl-modal-icon { width: 40px; height: 40px; flex-shrink: 0; background: rgba(232,35,42,0.12); border: 1px solid rgba(232,35,42,0.3); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+          #ytdl-modal-overlay .ytdl-modal-head h3 { font-size: 16px; font-weight: 800; color: #111114; font-family: 'Poppins', sans-serif; }
+          #ytdl-modal-overlay .ytdl-modal-head p { font-family: 'Poppins', sans-serif; font-size: 9px; color: #555; margin-top: 2px; }
+          #ytdl-modal-overlay .ytdl-modal-pills { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+          #ytdl-modal-overlay .ytdl-pill { display: flex; align-items: center; gap: 5px; background: #f5f5f7; border: 1px solid #e0e0e6; border-radius: 6px; padding: 6px 10px; font-family: 'Poppins', sans-serif; font-size: 10px; color: #555; }
+          #ytdl-modal-overlay .ytdl-pill-val { color: #111114; font-weight: 700; }
+          #ytdl-modal-overlay .ytdl-pill-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+          #ytdl-modal-overlay .ytdl-pill-dot.red { background: #e8232a; }
+          #ytdl-modal-overlay .ytdl-pill-dot.blue { background: #1a7fff; }
+          #ytdl-modal-overlay .ytdl-pill-dot.gold { background: #ffbb00; }
+          #ytdl-modal-overlay .ytdl-modal-progress { display: none; margin-bottom: 14px; }
+          #ytdl-modal-overlay .ytdl-modal-progress.show { display: block; }
+          #ytdl-modal-overlay .ytdl-prog-track { background: #f0f0f0; border-radius: 999px; height: 5px; overflow: hidden; margin-bottom: 6px; border: 1px solid #1a1a1a; }
+          #ytdl-modal-overlay .ytdl-prog-fill { height: 100%; background: linear-gradient(90deg, #e8232a, #1a7fff); border-radius: 999px; width: 0%; transition: width 0.4s; }
+          #ytdl-modal-overlay .ytdl-prog-label { font-family: 'Poppins', sans-serif; font-size: 9px; color: #555; }
+          #ytdl-modal-overlay .ytdl-modal-actions { display: flex; gap: 8px; }
+          #ytdl-modal-overlay .ytdl-btn-cancel { flex: 1; padding: 10px; background: none; border: 1px solid #ddd; color: #777; border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; transition: all .18s; }
+          #ytdl-modal-overlay .ytdl-btn-cancel:hover { border-color: #bbb; color: #555; }
+          #ytdl-modal-overlay .ytdl-btn-cancel:disabled { opacity: .4; cursor: not-allowed; }
+          #ytdl-modal-overlay .ytdl-btn-confirm { flex: 2; padding: 10px; background: #e8232a; border: none; color: #fff; border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: opacity .18s; display: flex; align-items: center; justify-content: center; gap: 6px; }
+          #ytdl-modal-overlay .ytdl-btn-confirm:hover { opacity: .85; }
+          #ytdl-modal-overlay .ytdl-btn-confirm:disabled { opacity: .5; cursor: not-allowed; }
+          @media (max-width: 600px) {
+            #ytdl-wrap { padding: 16px 12px 32px; }
+            #ytdl-wrap .ytdl-header { margin-bottom: 16px; }
+            #ytdl-wrap .ytdl-header h2 { font-size: clamp(22px, 7vw, 32px); }
+            #ytdl-wrap .ytdl-tagline { font-size: 11px; }
+            #ytdl-wrap .ytdl-search-wrap { display: flex !important; flex-direction: column; align-items: stretch; gap: 10px; }
+            #ytdl-wrap .ytdl-search-box { width: 100%; padding: 10px 12px; }
+            #ytdl-wrap .ytdl-btn-fetch-inline { display: none !important; }
+            #ytdl-wrap .ytdl-btn-fetch-standalone { display: flex !important; width: 100%; justify-content: center; padding: 14px; font-size: 15px; border-radius: 10px; }
+            #ytdl-wrap .ytdl-thumb-info { padding: 12px 12px 8px; }
+            #ytdl-wrap .ytdl-video-title { font-size: 14px; }
+            #ytdl-wrap .ytdl-format-row { flex-wrap: wrap; gap: 8px; padding: 10px; }
+            #ytdl-wrap .ytdl-format-left { flex: 1; min-width: 0; }
+            #ytdl-wrap .ytdl-format-type { font-size: 13px; }
+            #ytdl-wrap .ytdl-format-size { font-size: 10px; }
+            #ytdl-wrap .ytdl-btn-dl { width: 100%; justify-content: center; padding: 10px; font-size: 13px; }
+            #ytdl-modal-overlay .ytdl-modal { max-width: 100%; border-radius: 14px; }
+            #ytdl-modal-overlay .ytdl-modal-body { padding: 16px 16px 14px; }
+            #ytdl-modal-overlay .ytdl-modal-pills { flex-direction: column; gap: 6px; }
+            #ytdl-modal-overlay .ytdl-pill { width: 100%; }
+            #ytdl-modal-overlay .ytdl-modal-actions { flex-direction: column; }
+            #ytdl-modal-overlay .ytdl-btn-cancel, #ytdl-modal-overlay .ytdl-btn-confirm { flex: none; width: 100%; }
+          }
+          @media (min-width: 601px) {
+            #ytdl-wrap .ytdl-btn-fetch-standalone { display: none !important; }
+            #ytdl-wrap .ytdl-btn-fetch-inline { display: flex !important; }
+          }
+          @media (max-width: 400px) {
+            #ytdl-wrap .ytdl-header h2 { font-size: 20px; }
+            #ytdl-wrap .ytdl-qbadge { min-width: 44px; font-size: 10px; }
+            #ytdl-wrap .ytdl-formats-section { padding: 12px 10px 14px; }
+          }
+        </style>
+
+        <div id="ytdl-wrap">
+          <div class="ytdl-header">
+            <h2>Grab Any YouTube<br>Video in Seconds</h2>
+            <p class="ytdl-tagline">// paste link &rarr; fetch &rarr; pick quality &rarr; download</p>
+          </div>
+          <div class="ytdl-search-wrap">
+            <div class="ytdl-search-box">
+              <svg width="13" height="13" fill="none" stroke="#444" stroke-width="2" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+              <input type="text" id="ytdl-url-input" placeholder="https://www.youtube.com/watch?v=..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+              <button class="ytdl-btn-fetch ytdl-btn-fetch-inline" id="ytdl-fetch-btn-desktop">Fetch Video</button>
+            </div>
+            <button class="ytdl-btn-fetch ytdl-btn-fetch-standalone" id="ytdl-fetch-btn-mobile">Fetch Video</button>
+          </div>
+          <div class="ytdl-loader" id="ytdl-loader"><div class="ytdl-spinner"></div><p id="ytdl-loader-text">Fetching video...</p></div>
+          <div class="ytdl-error-box" id="ytdl-error-box"></div>
+          <div class="ytdl-result-card" id="ytdl-result-card">
+            <div class="ytdl-thumb-wrap" id="ytdl-thumb-wrap">
+              <div class="ytdl-thumb-placeholder" id="ytdl-thumb-placeholder">Loading thumbnail...</div>
+            </div>
+            <div class="ytdl-thumb-info">
+              <div class="ytdl-video-title" id="ytdl-video-title"></div>
+              <div class="ytdl-meta-row">
+                <div class="ytdl-meta-item">
+                  <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  <span id="ytdl-channel-name"></span>
+                </div>
+                <div class="ytdl-meta-item" id="ytdl-duration-meta" style="display:none">
+                  <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  <span id="ytdl-duration-text"></span>
+                </div>
+              </div>
+            </div>
+            <div class="ytdl-divider"></div>
+            <div class="ytdl-formats-section">
+              <div class="ytdl-formats-label">&#11015; Select Video Quality</div>
+              <div class="ytdl-formats-grid" id="ytdl-formats-grid"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="ytdl-modal-overlay">
+          <div class="ytdl-modal">
+            <div class="ytdl-modal-stripe"></div>
+            <div class="ytdl-modal-body">
+              <div class="ytdl-modal-head">
+                <div class="ytdl-modal-icon">
+                  <svg width="20" height="20" fill="none" stroke="#e8232a" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </div>
+                <div><h3>Ready to Download?</h3><p>confirm your selected format</p></div>
+              </div>
+              <div class="ytdl-modal-pills">
+                <div class="ytdl-pill"><div class="ytdl-pill-dot red"></div>Quality&nbsp;<span class="ytdl-pill-val" id="ytdl-m-quality">-</span></div>
+                <div class="ytdl-pill"><div class="ytdl-pill-dot blue"></div>Format&nbsp;<span class="ytdl-pill-val" id="ytdl-m-format">-</span></div>
+                <div class="ytdl-pill"><div class="ytdl-pill-dot gold"></div>Size&nbsp;<span class="ytdl-pill-val" id="ytdl-m-size">-</span></div>
+              </div>
+              <div class="ytdl-modal-progress" id="ytdl-modal-progress">
+                <div class="ytdl-prog-track"><div class="ytdl-prog-fill" id="ytdl-prog-fill"></div></div>
+                <div class="ytdl-prog-label" id="ytdl-prog-label">Starting...</div>
+              </div>
+              <div class="ytdl-modal-actions">
+                <button class="ytdl-btn-cancel" id="ytdl-btn-cancel">Cancel</button>
+                <button class="ytdl-btn-confirm" id="ytdl-btn-confirm">
+                  <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  Download Now
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ═══ END DOWNLOADER CODE ═══ -->
+
+      </div>
+
+      <!-- Stats strip -->
+      <div class="stats-strip fade-up fade-up-4">
+        <div class="stat-item">
+          <div class="stat-num">10M<span>+</span></div>
+          <div class="stat-label">Videos Downloaded</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">4K<span>+</span></div>
+          <div class="stat-label">Max Resolution</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">100<span>%</span></div>
+          <div class="stat-label">Free Forever</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">0<span>s</span></div>
+          <div class="stat-label">Registration Needed</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ ARTICLE SECTION ══════════ -->
+  <article class="article-section" id="how-it-works">
+
+    <div class="section-label">Guide</div>
+
+    <h2>How to Download YouTube Videos — Complete Guide</h2>
+    <p>
+      <strong>YTSaver</strong> is a free, browser-based YouTube video downloader that lets you save any public YouTube video directly to your device — no software installation, no account creation, and no hidden fees. Whether you want to save a tutorial for offline studying, archive a music video, or keep a lecture for future reference, YTSaver makes the process effortless and fast.
+    </p>
+
+    <h3 id="how-to-use">How to Use YTSaver — Step by Step</h3>
+    <p>Downloading a YouTube video with YTSaver takes less than 30 seconds. Follow these three simple steps:</p>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">STEP 01</div>
+        <h4>Copy the YouTube Link</h4>
+        <p>Open YouTube, find the video you want to download, and copy the URL from your browser's address bar or the Share button.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">STEP 02</div>
+        <h4>Paste & Fetch</h4>
+        <p>Paste the link into the search box above and click "Fetch Video." Our tool will instantly retrieve all available download formats.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">STEP 03</div>
+        <h4>Choose Quality & Download</h4>
+        <p>Select your preferred video quality — 1080p, 720p, 480p, or 360p — and click Download. Your file saves directly to your device.</p>
+      </div>
+    </div>
+
+    <h3>Why Choose YTSaver?</h3>
+    <p>
+      With dozens of YouTube downloaders available online, YTSaver stands out for its speed, reliability, and clean interface. Unlike many competitors, we do not show intrusive pop-up ads, we do not require browser extensions, and we do not store your data. Our platform is built with privacy-first principles — your download activity is never logged or shared.
+    </p>
+
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-icon">
+          <svg width="16" height="16" fill="none" stroke="#e8232a" stroke-width="2" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <div class="feature-text">
+          <h5>Lightning Fast</h5>
+          <p>Fetch and download in seconds with our optimized backend.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <svg width="16" height="16" fill="none" stroke="#e8232a" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        </div>
+        <div class="feature-text">
+          <h5>No Registration</h5>
+          <p>100% anonymous. No account, no email, no tracking.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <svg width="16" height="16" fill="none" stroke="#e8232a" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div class="feature-text">
+          <h5>Multiple Qualities</h5>
+          <p>Choose from 4K, 1080p, 720p, 480p and 360p MP4 formats.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <svg width="16" height="16" fill="none" stroke="#e8232a" stroke-width="2" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+        </div>
+        <div class="feature-text">
+          <h5>Mobile Friendly</h5>
+          <p>Fully responsive — works perfectly on phones and tablets.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <svg width="16" height="16" fill="none" stroke="#e8232a" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+        </div>
+        <div class="feature-text">
+          <h5>Works Everywhere</h5>
+          <p>No installation needed. Works on any browser, any OS.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <svg width="16" height="16" fill="none" stroke="#e8232a" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="feature-text">
+          <h5>Safe & Secure</h5>
+          <p>No malware, no adware. Clean downloads every time.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>Supported Video Formats and Quality Options</h3>
+    <p>
+      YTSaver supports downloading YouTube videos in <strong>MP4 format</strong>, which is the most universally compatible video format available. MP4 files play natively on all modern devices including Windows PCs, Macs, iPhones, Android phones, smart TVs, and tablets — without requiring any additional software or codecs.
+    </p>
+    <p>
+      Depending on the original upload quality of the video, you may find options ranging from <strong>144p up to 4K (2160p)</strong>. For most purposes, we recommend downloading in <strong>1080p Full HD</strong> for the best balance of visual quality and file size. If you have limited storage or a slower internet connection, <strong>720p HD</strong> is an excellent choice that still looks sharp on most screens.
+    </p>
+
+    <h3>Is It Legal to Download YouTube Videos?</h3>
+    <p>
+      This is a common question with an important nuance. YouTube's Terms of Service technically prohibit downloading videos without explicit permission from the platform or content creator. However, downloading videos for <strong>personal, offline, non-commercial use</strong> exists in a legal grey area in many jurisdictions. Many countries recognize the concept of "private copying" or "fair use," which may permit downloading content you have already legally accessed.
+    </p>
+    <p>
+      As a general rule: only download videos that you have the right to access, never re-upload downloaded content without permission, and do not use downloaded videos for commercial purposes. When in doubt, check the specific copyright laws applicable in your country.
+    </p>
+
+    <h3 id="faq">Frequently Asked Questions</h3>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          Is YTSaver completely free to use?
+          <span class="faq-icon">
+            <svg width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </span>
+        </button>
+        <div class="faq-a">Yes, YTSaver is 100% free. There are no hidden charges, no subscription plans, and no premium tiers. All features including HD and 4K downloads are available to every user at no cost.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          Do I need to install any software or extension?
+          <span class="faq-icon">
+            <svg width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </span>
+        </button>
+        <div class="faq-a">No installation is required. YTSaver works entirely in your web browser. Simply paste your YouTube link and download — no extensions, plugins, or desktop apps needed.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          Which video qualities are available for download?
+          <span class="faq-icon">
+            <svg width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </span>
+        </button>
+        <div class="faq-a">Available qualities depend on the original YouTube video. Our tool fetches all available options, which may include 144p, 240p, 360p, 480p, 720p HD, 1080p Full HD, 1440p QHD, and 4K (2160p). All downloads are in MP4 format.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          Can I use YTSaver on my smartphone?
+          <span class="faq-icon">
+            <svg width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </span>
+        </button>
+        <div class="faq-a">Absolutely. YTSaver is fully responsive and optimized for mobile browsers on both iOS and Android. The interface adapts automatically to your screen size for the best possible experience.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          Why is a video not downloading or showing an error?
+          <span class="faq-icon">
+            <svg width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </span>
+        </button>
+        <div class="faq-a">Errors can occur if the video is age-restricted, region-locked, set to private, or if the YouTube link is incorrectly formatted. Make sure you are using a standard YouTube URL (youtube.com/watch?v=... or youtu.be/...) and that the video is publicly accessible.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          Is my data and browsing history stored?
+          <span class="faq-icon">
+            <svg width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </span>
+        </button>
+        <div class="faq-a">No. YTSaver does not log, store, or share any data about the URLs you enter or the videos you download. Your privacy is fully protected. We do not use cookies for tracking purposes.</div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ══════════ PRE-FOOTER DIVIDER ══════════ -->
+  <div class="page-divider"></div>
+
+  <!-- ══════════ FOOTER ══════════ -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a class="logo" href="#">
+            <div class="logo-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </div>
+            YT<span>Saver</span>
+          </a>
+          <p>A fast, free, and privacy-respecting YouTube video downloader. No software required. Works on any device.</p>
+        </div>
+
+        <div class="footer-links-group">
+          <h6>Quick Links</h6>
+          <ul>
+            <li><a href="#how-to-use">How to Use</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#">Supported Formats</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links-group">
+          <h6>Legal & Support</h6>
+          <ul>
+            <li><a id="contact" href="#">Contact Us</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 YTSaver. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="#">Contact Us</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ══════════ SCRIPTS ══════════ -->
+  <script>
+    (function() {
+      var RAPIDAPI_KEY = 'f08bf66c6bmshada7be8f1ca79e7p195e2cjsn6363e96ae1d7';
+      var AJAX_URL = (typeof ytdl_ajax !== 'undefined' && ytdl_ajax.url)
+        ? ytdl_ajax.url
+        : window.location.origin + '/wp-admin/admin-ajax.php';
+      var ytdlPendingUrl = '', ytdlPendingFilename = '';
+
+      function ytdlExtractId(url) {
+        var p = [/youtu\.be\/([^?&\s]+)/,/[?&]v=([^?&\s]+)/,/embed\/([^?&\s]+)/,/shorts\/([^?&\s]+)/];
+        for (var i=0; i<p.length; i++) { var m = url.match(p[i]); if (m) return m[1]; }
+        return null;
+      }
+      function ytdlShowError(msg) { var el = document.getElementById('ytdl-error-box'); el.innerHTML = msg; el.classList.add('show'); }
+      function ytdlHideError() { document.getElementById('ytdl-error-box').classList.remove('show'); }
+
+      function ytdlSetThumbnail(id, noembedThumb) {
+        var wrap = document.getElementById('ytdl-thumb-wrap');
+        var ph = document.getElementById('ytdl-thumb-placeholder');
+        var urls = [noembedThumb, 'https://i.ytimg.com/vi/'+id+'/maxresdefault.jpg', 'https://i.ytimg.com/vi/'+id+'/hqdefault.jpg'].filter(Boolean);
+        var i = 0;
+        function next() {
+          if (i >= urls.length) { ph.textContent = 'No thumbnail'; return; }
+          var img = new Image();
+          img.onload = function() { if (img.naturalWidth > 120) { wrap.style.backgroundImage = "url('"+urls[i]+"')"; ph.style.display = 'none'; } else { i++; next(); } };
+          img.onerror = function() { i++; next(); };
+          img.src = urls[i];
+        }
+        next();
+      }
+
+      function ytdlFmtSize(b, bitrate, duration) {
+        if (b) { var mb = b/1048576; return mb >= 1024 ? (mb/1024).toFixed(2)+' GB' : mb.toFixed(1)+' MB'; }
+        if (bitrate && duration) { var mb2 = (bitrate * parseInt(duration)) / 8 / 1048576; return '~' + (mb2 >= 1024 ? (mb2/1024).toFixed(2)+' GB' : mb2.toFixed(1)+' MB'); }
+        return 'Unknown';
+      }
+      function ytdlFmtDur(s) {
+        s = parseInt(s);
+        var h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sec = s%60;
+        return h ? h+':'+String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0') : m+':'+String(sec).padStart(2,'0');
+      }
+      function ytdlGetQBadge(quality) {
+        var q = (quality||'').toLowerCase();
+        if (q.indexOf('2160')>-1 || q.indexOf('4k')>-1) return 'ytdl-qbadge ytdl-q-4k';
+        if (q.indexOf('1080')>-1) return 'ytdl-qbadge ytdl-q-1080';
+        if (q.indexOf('720')>-1)  return 'ytdl-qbadge ytdl-q-720';
+        if (q.indexOf('480')>-1)  return 'ytdl-qbadge ytdl-q-480';
+        if (q.indexOf('360')>-1 || q.indexOf('240')>-1 || q.indexOf('144')>-1) return 'ytdl-qbadge ytdl-q-360';
+        return 'ytdl-qbadge ytdl-q-other';
+      }
+
+      function ytdlOpenModal(url, filename, quality, format, size) {
+        ytdlPendingUrl = url; ytdlPendingFilename = filename;
+        document.getElementById('ytdl-m-quality').textContent = quality;
+        document.getElementById('ytdl-m-format').textContent = format;
+        document.getElementById('ytdl-m-size').textContent = size;
+        document.getElementById('ytdl-modal-progress').classList.remove('show');
+        document.getElementById('ytdl-prog-fill').style.width = '0%';
+        document.getElementById('ytdl-prog-label').textContent = 'Ready...';
+        document.getElementById('ytdl-btn-confirm').disabled = false;
+        document.getElementById('ytdl-btn-cancel').disabled = false;
+        document.getElementById('ytdl-btn-confirm').innerHTML = '<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download Now';
+        document.getElementById('ytdl-modal-overlay').classList.add('show');
+      }
+
+      function ytdlCloseModal() { document.getElementById('ytdl-modal-overlay').classList.remove('show'); }
+      window.ytdlCloseModal = ytdlCloseModal;
+
+      document.getElementById('ytdl-modal-overlay').addEventListener('click', function(e) {
+        if (e.target === e.currentTarget) ytdlCloseModal();
+      });
+      document.getElementById('ytdl-btn-cancel').addEventListener('click', ytdlCloseModal);
+
+      document.getElementById('ytdl-btn-confirm').addEventListener('click', function() {
+        document.getElementById('ytdl-btn-confirm').disabled = true;
+        document.getElementById('ytdl-btn-cancel').disabled = true;
+        document.getElementById('ytdl-btn-confirm').textContent = 'Starting...';
+        document.getElementById('ytdl-modal-progress').classList.add('show');
+        document.getElementById('ytdl-prog-fill').style.width = '40%';
+        document.getElementById('ytdl-prog-label').textContent = 'Preparing download...';
+        var proxyUrl = AJAX_URL + '?action=ytdl_proxy&url=' + encodeURIComponent(ytdlPendingUrl) + '&filename=' + encodeURIComponent(ytdlPendingFilename);
+        var a = document.createElement('a');
+        a.href = proxyUrl; a.download = ytdlPendingFilename;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        document.getElementById('ytdl-prog-fill').style.width = '100%';
+        document.getElementById('ytdl-prog-label').textContent = '✓ Download started! Check downloads folder.';
+        document.getElementById('ytdl-btn-confirm').textContent = 'Done ✓';
+        setTimeout(function() { ytdlCloseModal(); }, 3000);
+      });
+
+      var YTDL_QUALITY_ORDER = ['2160p','1080p','720p','480p','360p','240p','144p'];
+      var YTDL_REC_QUALITIES = ['1080p','720p'];
+
+      function ytdlRenderFormats(formats, title, videoDuration) {
+        var grid = document.getElementById('ytdl-formats-grid');
+        grid.innerHTML = '';
+        if (!formats || !formats.length) { grid.innerHTML = '<div class="ytdl-no-formats">No downloadable formats found.</div>'; return; }
+        formats.sort(function(a, b) {
+          var qa = a.qualityLabel || a.quality || '', qb = b.qualityLabel || b.quality || '';
+          var ia = YTDL_QUALITY_ORDER.findIndex(function(q) { return qa.indexOf(q.replace('p',''))>-1; });
+          var ib = YTDL_QUALITY_ORDER.findIndex(function(q) { return qb.indexOf(q.replace('p',''))>-1; });
+          return (ia===-1?99:ia)-(ib===-1?99:ib);
+        });
+        formats.forEach(function(f) {
+          var quality = f.qualityLabel || f.quality || 'Unknown';
+          var size = ytdlFmtSize(f.contentLength || f.filesize, f.bitrate || f.averageBitrate, videoDuration);
+          var safeTitle = (title||'video').replace(/[^a-z0-9]/gi,'_').substring(0,40);
+          var filename = safeTitle + '_' + quality + '.mp4';
+          var badgeClass = ytdlGetQBadge(quality);
+          var isRec = YTDL_REC_QUALITIES.some(function(q) { return quality.indexOf(q)>-1; });
+          var row = document.createElement('div');
+          row.className = 'ytdl-format-row';
+          row.innerHTML =
+            '<div class="ytdl-format-left">' +
+              '<div class="'+badgeClass+'">'+quality+'</div>' +
+              '<div class="ytdl-format-info">' +
+                '<div class="ytdl-format-type">MP4 · Video'+(isRec?'<span class="ytdl-rec-tag">&#9733; Best</span>':'')+'</div>' +
+                '<div class="ytdl-format-size">'+size+'</div>' +
+              '</div>' +
+            '</div>' +
+            '<button class="ytdl-btn-dl">' +
+              '<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>' +
+              ' Download' +
+            '</button>';
+          (function(fRef, fn, q, s) {
+            row.querySelector('.ytdl-btn-dl').addEventListener('click', function() {
+              ytdlOpenModal(fRef.url, fn, q, 'MP4 · Video', s);
+            });
+          })(f, filename, quality, size);
+          grid.appendChild(row);
+        });
+      }
+
+      function ytdlFetchInfo() {
+        ytdlHideError();
+        var url = document.getElementById('ytdl-url-input').value.trim();
+        if (!url) { ytdlShowError('Please paste a YouTube link first.'); return; }
+        var id = ytdlExtractId(url);
+        if (!id) { ytdlShowError('Invalid YouTube URL.'); return; }
+        document.getElementById('ytdl-loader').classList.add('show');
+        document.getElementById('ytdl-result-card').classList.remove('show');
+        document.getElementById('ytdl-fetch-btn-desktop').disabled = true;
+        document.getElementById('ytdl-fetch-btn-mobile').disabled = true;
+        document.getElementById('ytdl-loader-text').textContent = 'Fetching video details...';
+        document.getElementById('ytdl-thumb-wrap').style.backgroundImage = '';
+        document.getElementById('ytdl-thumb-placeholder').style.display = 'flex';
+        document.getElementById('ytdl-thumb-placeholder').textContent = 'Loading thumbnail...';
+        document.getElementById('ytdl-duration-meta').style.display = 'none';
+        var videoTitle = '';
+        fetch('https://noembed.com/embed?url=https://www.youtube.com/watch?v='+id)
+          .then(function(r){ return r.json(); })
+          .then(function(nd) {
+            videoTitle = nd.title || 'video';
+            document.getElementById('ytdl-video-title').textContent = videoTitle;
+            document.getElementById('ytdl-channel-name').textContent = nd.author_name || '';
+            ytdlSetThumbnail(id, nd.thumbnail_url);
+            document.getElementById('ytdl-loader-text').textContent = 'Fetching download links...';
+            return fetch('https://yt-api.p.rapidapi.com/dl?id='+id, {
+              headers: { 'X-RapidAPI-Key': RAPIDAPI_KEY, 'X-RapidAPI-Host': 'yt-api.p.rapidapi.com' }
+            });
+          })
+          .then(function(r) {
+            if (!r.ok) throw new Error('API error ' + r.status);
+            return r.json();
+          })
+          .then(function(api) {
+            if (api.lengthSeconds) {
+              document.getElementById('ytdl-duration-text').textContent = ytdlFmtDur(api.lengthSeconds);
+              document.getElementById('ytdl-duration-meta').style.display = 'flex';
+            }
+            var all = [];
+            (api.formats||[]).filter(function(f){ return f.url && f.mimeType && f.mimeType.indexOf('video/mp4')>-1; }).forEach(function(f){ all.push(Object.assign({},f,{type:'video'})); });
+            (api.adaptiveFormats||[]).filter(function(f){ return f.url && f.mimeType && f.mimeType.indexOf('video/mp4')>-1 && f.mimeType.indexOf('audio')===-1; }).slice(0,5).forEach(function(f){ all.push(Object.assign({},f,{type:'video'})); });
+            var seen = new Set();
+            var unique = all.filter(function(f){ var k=f.qualityLabel||f.itag; if(seen.has(k)) return false; seen.add(k); return true; });
+            ytdlRenderFormats(unique, videoTitle, api.lengthSeconds);
+            document.getElementById('ytdl-result-card').classList.add('show');
+          })
+          .catch(function(err) {
+            ytdlShowError('&#9888; ' + (err.message || 'Something went wrong. Please try again.'));
+          })
+          .finally(function() {
+            document.getElementById('ytdl-loader').classList.remove('show');
+            document.getElementById('ytdl-fetch-btn-desktop').disabled = false;
+            document.getElementById('ytdl-fetch-btn-mobile').disabled = false;
+          });
+      }
+
+      window.ytdlFetchInfo = ytdlFetchInfo;
+      document.getElementById('ytdl-fetch-btn-desktop').addEventListener('click', ytdlFetchInfo);
+      document.getElementById('ytdl-fetch-btn-mobile').addEventListener('click', ytdlFetchInfo);
+      document.getElementById('ytdl-url-input').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') ytdlFetchInfo();
+      });
+    })();
+
+    // ── FAQ Accordion ──
+    document.querySelectorAll('.faq-q').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var item = this.closest('.faq-item');
+        var isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(function(i) { i.classList.remove('open'); });
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+  </script>
+</body>
+</html>
